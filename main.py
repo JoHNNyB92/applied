@@ -19,14 +19,15 @@ def generate_noise(min_max,length,keys,df,enable_plot=False):
             #noise_array.append(np.random.normal(, , length))
             
         
-def add_noise():
-    #TODO
+#def add_noise():
+#    #TODO
 
 
 
 if __name__ == "__main__":
     dfs = pd.read_excel("players.xlsx")
-    noise_prop = [0.1,0.2,0.3,0.4,0.5,0.4,0.5,0.6,0.2,0.3,0.4]
+    length=df['FTA'].count()
+    noise_prop = [0.1 for _ in range(length)]
     noise_prop_dic={}
     print dfs.keys()
     df = pd.DataFrame(dfs, columns=dfs.keys())
@@ -38,12 +39,13 @@ if __name__ == "__main__":
         cnt+=1
         min_max[key]=[df.loc[df[key].idxmax()][key],df.loc[df[key].idxmin()][key]]
         print min_max[key]
-    length=df['FTA'].count()
+    
     headers=df.keys()
     if len(sys.argv)!=1:
         generate_noise(noise_prop_dict,min_max,length,headers,dfs,True)
     else:
         generate_noise(noise_prop_dict,min_max,length,headers,dfs)
+    
     '''miss = prop
     outlier = prop
     swap = prop
