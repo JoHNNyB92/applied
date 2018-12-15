@@ -2,8 +2,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import sys
+import xlsxwriter
+import os
 
-def generate_noise(min_max,length,keys,df,enable_plot=False):
+path=''
+filename=''
+
+def generate_noise(min_max,length,keys,df,enable_plot):
     noise_array={}
     records={}
     for key in keys:
@@ -17,19 +22,40 @@ def generate_noise(min_max,length,keys,df,enable_plot=False):
             plt.show()
             plt.gcf().clear()
             #noise_array.append(np.random.normal(, , length))
-            
-        
+        pd_noise_array=pd.DataFrame.from_dict(noise_array)    
+        write_excel_pd(pd_noise_array)
+ 
+def write_excel_pd(pd_noise_array):      
+    os.chdir('/home/mscuser/Desktop/applied Data science/applied/'+path)
+    pathname=filename+'_noisy.xlsx'
+    
+    writer = pd.ExcelWriter(pathname)
+    pd_noise_array.to_excel(writer,'Sheet1')
+    writer.save()
+
+
 #def add_noise():
 #    #TODO
 
+def main(argv):
 
-
-if __name__ == "__main__":
-    dfs = pd.read_excel("players.xlsx")
-    length=df['FTA'].count()
+    global path
+    global filename
+    file_xlsx=sys.argv[1]
+    path=file_xlsx.split('/')
+    filename=path[1]
+    filename=filename.split('.')
+    filename=filename[0]
+    path=path[0]
+    column=sys.argv[2]
+    print ("Add noise on file:",file_xlsx)
+    print ("Add noise on feature:", column)
+    print ("Path:",path)
+    dfs = pd.read_excel(file_xlsx)
+    length=dfs[column].count()
+    print ("length:",length)
     noise_prop = [0.1 for _ in range(length)]
-    noise_prop_dic={}
-    print dfs.keys()
+    noise_prop_dict={}
     df = pd.DataFrame(dfs, columns=dfs.keys())
     min_max={}
     df=df.drop('Player', axis=1)
@@ -38,13 +64,13 @@ if __name__ == "__main__":
         noise_prop_dict[key]=noise_prop[cnt]
         cnt+=1
         min_max[key]=[df.loc[df[key].idxmax()][key],df.loc[df[key].idxmin()][key]]
-        print min_max[key]
+        print (min_max[key])
     
     headers=df.keys()
-    if len(sys.argv)!=1:
-        generate_noise(noise_prop_dict,min_max,length,headers,dfs,True)
+    if len(sys.argv)!=3:
+        generate_noise(min_max,length,headers,dfs,True)
     else:
-        generate_noise(noise_prop_dict,min_max,length,headers,dfs)
+        generate_noise(min_max,length,headers,dfs,False)
     
     '''miss = prop
     outlier = prop
@@ -81,6 +107,12 @@ if __name__ == "__main__":
  
         mixed.append(v)
     print 'Added ',ms,' NA records, swapped ',sw,' fields in records and inserted outliers in ', o,' records.'
-    create_csv(mixed)'''
+    create_csv(mixed)''' 
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
+    
+    
+    
 	
  
