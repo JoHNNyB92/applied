@@ -1,0 +1,26 @@
+Boston
+
+Ridge:
+prin thn alalgh augerou me to spasimo twn clean data se train k test, otan to ekana me ksplit::
+	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.6261476751427445	
+meta apo allagh_ clean data::
+	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.562557179733615
+me housing_0.05_c_train_noisy.xlsx::
+	
+
+Lasso:
+prin thn alalgh augerou me to spasimo twn clean data se train k test, otan to ekana me ksplit::
+	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.633698649387396	
+meta apo allagh_ clean data::
+	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.831670503770843
+me housing_0.05_c_train_noisy.xlsx::
+	
+	
+LR:
+prin thn alalgh augerou me to spasimo twn clean data se train k test, otan to ekana me ksplit::
+	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.6173409102890595
+meta apo allagh_ clean data::
+	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.5736141409712415
+me housing_0.05_c_train_noisy.xlsx::
+
+
