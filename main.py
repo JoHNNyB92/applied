@@ -1,7 +1,10 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.model_selection import StratifiedKFold
 import sys
+from sklearn.model_selection import train_test_split
+import random
 
 def generate_noise(min_max,keys,length,df,noisyless,n_f,enable_plot=False):
     noise_array={}
@@ -41,40 +44,83 @@ def add_noise(noisy,noisy_probs,dfs,feat_prob,noisyless,n_f):
     if n_f!="c":
         for key in dfs.keys():
             if len(dfs.keys())!=cnt and key not in noisyless:
-                for rec in range(dfs[key].count()):
+                rec=0
+                row_iterator = df.iterrows()
+                for i,elem in row_iterator:
                     prob=noisy_probs[key][rec]
                     if prob<feat_prob[key]:
-                        print 'Adding noise to '+key+',record '+str(rec)+' ,previously value '+str(dfs[key][rec])+', noise '+str(noisy[key][rec])+',new value '+str(dfs[key][rec]+noisy[key][rec])
-                        dfs[key][rec]=dfs[key][rec]+noisy[key][rec]
+                        print 'Adding noise to '+key+',record '+str(rec)+' ,previously value '+str(elem[key])+', noise '+str(noisy[key][rec])+',new value '+str(elem[key]+noisy[key][rec])
+                        
+                        elem[key]=elem[key]+noisy[key][rec]
+                        dfs.at[i,key] = elem[key] 
+                    rec=rec+1
             cnt=cnt+1
     else:
         keys=df.keys()
         target=keys[len(keys)-1]
-        for rec in range(dfs[target].count()):
+        rec=0
+        row_iterator = df.iterrows()
+        for i,elem in row_iterator:
             prob=noisy_probs[target][rec]
             if prob<feat_prob[target]:
-                print 'Adding noise to '+target+',record '+str(rec)+' ,previously value '+str(dfs[target][rec])+', noise '+str(noisy[target][rec])+',new value '+str(dfs[target][rec]+noisy[target][rec])
-                dfs[target][rec]=dfs[target][rec]+noisy[target][rec]
+                print 'Adding noise to '+target+',record '+str(rec)+' ,previously value '+str(elem[target])+', noise '+str(noisy[target][rec])+',new value '+str(elem[target]+noisy[target][rec])
+                elem[target]=elem[target]+noisy[target][rec]
+                dfs.at[i,target] = elem[target]
+            rec=rec+1
     return dfs
 
     
-def write_excel_pd(pd_noise_array,folder,name,noisy,n_f):
-    pathname=folder+'/'+name.split('.')[0]+'_'+str(noisy)+'_'+n_f+'_noisy.xlsx'
+def write_excel_pd(pd_noise_array,folder,name,noisy,n_f,case_dc,case_tt):
+    pathname=folder+'/'+name.split('.')[0]+'_'+str(noisy)+'_'+n_f+'_'+case_tt+'_'+case_dc+'.xlsx'
     writer = pd.ExcelWriter(pathname)
     pd_noise_array.to_excel(writer,'Sheet1')
     writer.save()
 
+def skf_regression(dfs,pct):
+    tmp=[]
+    tens=[]
+    cols=dfs.keys()
+    target=cols[len(dfs.keys())-1]
+    dfs=dfs.sort_values(by=[target])
+    df_train = pd.DataFrame(pd.np.empty((0,len(cols))))
+    df_train.columns=cols[:]
+    df_test=df = pd.DataFrame(pd.np.empty((0,len(cols))))
+    df_test.columns=cols[:]
+    amount=int(pct*10)
+    for x in range(len(dfs[cols[0]])):
+        tmp.append(dfs.iloc[x])
+        if x%10==9:
+            tens.append(tmp)
+            tmp=[]
+    if len(tmp)!=0:
+        tens.append(tmp)
+    for o_l in tens:
+        l=o_l[:]
+        for m in range(amount):
+            index = random.randrange(len(l))
+            if index!=(len(l)-1):
+                elem = l[index]
+                l[index] = l[len(l)-1]
+                df_test=df_test.append(elem)
+                del l[-1]
+            else:
+                elem = l[index]
+                df_test=df_test.append(elem)
+                del l[-1]
+        for x in l:
+            df_train=df_train.append(x)
+    return (df_train,df_test)
 
+         
 if __name__ == "__main__":
     noisy_folder=sys.argv[1]
     clean_dataset=sys.argv[2]
     noisy_pct=float(sys.argv[3])
     n_f=sys.argv[4]
-    print noisy_pct
     dfs = pd.read_excel(noisy_folder+'/'+clean_dataset)
     df = pd.DataFrame(dfs, columns=dfs.keys())
     min_max={}
-    
+    dfs_tr,df_test=np.split(dfs, [int(.8*len(df))])
     noise_prop_dict={}
     noisyless=[]
     cnt=0
@@ -94,16 +140,20 @@ if __name__ == "__main__":
             noise_prop_dict[key]=noise_prop[cnt]
             cnt+=1
             min_max[key]=[df.loc[df[key].idxmax()][key],df.loc[df[key].idxmin()][key]]
-            print min_max[key]
+    pct=0.2
+    (df_train,df_test)=skf_regression(df,pct)
+    write_excel_pd(df_train,noisy_folder,clean_dataset,noisy_pct,'','clean','train')
+    write_excel_pd(df_test,noisy_folder,clean_dataset,noisy_pct,'','','test')
     
     headers=df.keys()  
     noisy={}
     noisy_probs={}
+    
     if len(sys.argv)!=5:
-        (noisy,noisy_probs)=generate_noise(min_max,headers,length,dfs,noisyless,n_f,True)
+        (noisy,noisy_probs)=generate_noise(min_max,headers,length,df_train,noisyless,n_f,True)
     else:
-        (noisy,noisy_probs)=generate_noise(min_max,headers,length,dfs,noisyless,n_f)
-    dfs=add_noise(noisy,noisy_probs,df,noise_prop_dict,noisyless,n_f)
-    write_excel_pd(dfs,noisy_folder,clean_dataset,noisy_pct,n_f)
+        (noisy,noisy_probs)=generate_noise(min_max,headers,length,df_train,noisyless,n_f)
+    df_train=add_noise(noisy,noisy_probs,df_train,noise_prop_dict,noisyless,n_f)
+    write_excel_pd(df_train,noisy_folder,clean_dataset,noisy_pct,n_f,'noisy','train')
 	
  
