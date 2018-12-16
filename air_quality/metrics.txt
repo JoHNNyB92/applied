@@ -1,26 +1,19 @@
 Air-qulaity
 
+
 Ridge:
-prin thn alalgh augerou me to spasimo twn clean data se train k test, otan to ekana me ksplit::
-	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.6261476751427445
-meta apo allagh_ clean data::
-	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.4704225734586636
-me AirQualityUCI_0.05_c_train_noisy.xlsx::
-	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.4741488020325709
+clean data::					neg_mean_absolute_error :  -0.5344337800039234
+0.05_c_train_noisy.xlsx::		neg_mean_absolute_error :  -0.5344337800039234
+0.05_f_train_noisy.xlsx::		neg_mean_absolute_error :  -0.08990693788057562
 
 Lasso:
-prin thn alalgh augerou me to spasimo twn clean data se train k test, otan to ekana me ksplit::
-	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.2501487531480461
-meta apo allagh_ clean data::
-	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.5439052612494482
-me AirQualityUCI_0.05_c_train_noisy.xlsx::
-	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.5434423225574262
+clean data::					neg_mean_absolute_error : -0.7601883879163325
+0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.8336763777582517
+0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : -0.11721549188687583
 
+	
 LR:
-prin thn alalgh augerou me to spasimo twn clean data se train k test, otan to ekana me ksplit::
-	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.253718537044171
-meta apo allagh_ clean data::
-	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.4665737664677329
-me AirQualityUCI_0.05_c_train_noisy.xlsx::
-	neg_mean_absolute_error for test dataset after setting  hyperparameters is: -0.4661672317354391
+clean data::					neg_mean_absolute_error : -0.5212039233075043
+0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.5212039233075043
+0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : -0.07412787335861691
 
