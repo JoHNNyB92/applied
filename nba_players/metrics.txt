@@ -1,19 +1,22 @@
 nba
 
+
 Ridge:
-clean data::					neg_mean_absolute_error : -0.6779368252977931
-0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.7875639582617888
-0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : -0.6779368252977931
+clean data::					neg_mean_absolute_error : 0.8197 ok, var:0.4244
+0.15_c_train_noisy.xlsx::		neg_mean_absolute_error : 0.8537, var: 0.1951
+0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : 
 
 
 Lasso:
-clean data::					neg_mean_absolute_error : -0.7141729596811992
-0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.938920135042383
-0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : -0.7166538896950146
+clean data::					neg_mean_absolute_error :  0.8185 ok, var:0.3423	
+0.15_c_train_noisy.xlsx::		neg_mean_absolute_error : 0.8652, var:  0.1897
+0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : 
 
 	
 LR:
-clean data::					neg_mean_absolute_error : -0.6918702769215829
-0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.8035747666500986
-0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : -0.6918702769215829
+clean data::					neg_mean_absolute_error : 0.8495 ok , var:0.3884
+0.15_c_train_noisy.xlsx::		neg_mean_absolute_error :  0.8347 ok , var:  0.2855
+0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : 
+                        
+
 
