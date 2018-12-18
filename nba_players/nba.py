@@ -28,8 +28,8 @@ from sklearn.metrics import mean_squared_error
 
 
 #nba = pd.read_excel('players_stats_0.05__train_clean.xlsx')
-#nba = pd.read_excel('players_stats_0.05_f_train_noisy.xlsx')
-nba = pd.read_excel('players_stats_0.15_c_train_noisy.xlsx')
+nba = pd.read_excel('players_stats_0.05_f_train_noisy.xlsx')
+#nba = pd.read_excel('players_stats_0.15_c_train_noisy.xlsx')
 nba_test = pd.read_excel('players_stats_0.05__test_.xlsx')
 
 '''
@@ -279,7 +279,7 @@ predictions_Lasso=model_Lasso_win.predict(X_test)
 lasso_mse = mean_squared_error(predictions_Lasso,Y_test)
 lasso_mse = np.sqrt(lasso_mse)
 lasso_var=predictions_Lasso.var()
-print('Linear Regression RMSE: %.4f' % lasso_mse)
+print('Lasso Regression RMSE: %.4f' % lasso_mse)
 print('Lasso Regression var: %.4f' % lasso_var)
 
 #ridge_test
@@ -289,5 +289,5 @@ predictions_Ridge=model_Ridge_win.predict(X_test)
 Ridge_mse = mean_squared_error(predictions_Ridge,Y_test)
 Ridge_mse = np.sqrt(Ridge_mse)
 ridge_var=predictions_Ridge.var()
-print('Linear Regression RMSE: %.4f' % Ridge_mse)
+print('Ridge Regression RMSE: %.4f' % Ridge_mse)
 print('Ridge Regression var: %.4f' % ridge_var)

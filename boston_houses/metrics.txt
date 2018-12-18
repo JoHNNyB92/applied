@@ -2,20 +2,19 @@ Boston
 
 
 Ridge:
-clean data::				neg_mean_absolute_error :  -0.5667279940094192
-0.05_c_train_noisy.xlsx::		neg_mean_absolute_error :  -0.601003494866865
-0.05_f_train_noisy.xlsx::		neg_mean_absolute_error :  -0.5667279940094192 
+clean data::					          RMSE : 0.6229,  var: 0.5203
+0.05_c_train_noisy.xlsx::		RMSE : 0.6465, var: 0.4414
+0.05_f_train_noisy.xlsx::		RMSE : 0.6180,  var: 0.5394 
 
 Lasso:
-clean data::				neg_mean_absolute_error : -0.9245982568463879
-0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.9005637141485334
-0.05_f_train_noisy.xlsx::		neg_mean_absolute_error :  -0.9391754785727168
+clean data::					          RMSE : 0.7305,  var: 0.2248
+0.05_c_train_noisy.xlsx::		RMSE : 0.7542, var: 0.2126
+0.05_f_train_noisy.xlsx::		RMSE : 0.9811,  var: 0.0000
 
 	
 LR:
-clean data::				neg_mean_absolute_error : -0.6085660589060738
-0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.6309758534259571
-0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : -0.6085660589060738
-
+clean data::					          RMSE :  0.6307,  var: 0.5182
+0.05_c_train_noisy.xlsx::		RMSE :  0.6535, var: 0.4462
+0.05_f_train_noisy.xlsx::		RMSE :  0.6181,  var: 0.5236
 
 

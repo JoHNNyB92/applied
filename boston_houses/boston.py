@@ -4,34 +4,27 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 from pandas.plotting import scatter_matrix
-
 from sklearn import decomposition
-
 from numpy import set_printoptions
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import Normalizer
 from sklearn.preprocessing import Binarizer
-
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Ridge
 from sklearn.linear_model import Lasso
-
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
-
 from sklearn.datasets import load_boston
 from sklearn.metrics import mean_squared_error
 from collections import Counter
-
 import operator
 from sklearn.model_selection import GridSearchCV
-
+from sklearn.metrics import mean_squared_error
 
 
 #boston_pd = pd.read_excel('housing_0.05__train_clean.xlsx')
@@ -39,42 +32,37 @@ from sklearn.model_selection import GridSearchCV
 boston_pd = pd.read_excel('housing_0.05_f_train_noisy.xlsx')
 boston_pd_test = pd.read_excel('housing_0.05__test_.xlsx')
 
+'''
 print "\nHead of the dataset:\n", boston_pd.head()
 print "------------------------------------------------------------------------------------------------"
 print "\nTail of the dataset:\n", boston_pd.tail()
+'''
 
 null_data = boston_pd[boston_pd.isnull().any(axis=1)]
-print null_data
+#print null_data
 
 null_data = boston_pd_test[boston_pd_test.isnull().any(axis=1)]
-print null_data
+#print null_data
 
-#train
+##train
 features = boston_pd
-#is the target feature
 features = features.drop('MEDV', axis=1)
 labels = boston_pd['MEDV'].values
 features = features.values
-
-
 print "\nShape of boston_pd train:", features.shape
 
 #test
 features_test = boston_pd_test
-#is the target feature
 features_test = features_test.drop('MEDV', axis=1)
 labels_test = boston_pd_test['MEDV'].values
 features_test = features_test.values
-
-
 print "\nShape of boston_pd test:", features_test.shape
 
 
-print "\nShape of nba test:", features_test.shape
-print (boston_pd.describe())
-
 
 '''
+
+print (boston_pd.describe())
 pd.set_option('display.width', 100)
 pd.set_option('precision', 3)
 correlations = boston_pd.corr(method='pearson')
@@ -97,12 +85,12 @@ plt.show()
 sns.boxplot(data=boston_pd)
 plt.show()
 '''
+
 # Rescale data (between 0 and 1)
 
 #train
 scaler = MinMaxScaler(feature_range=(0, 1))
 rescaledX = scaler.fit_transform(features)
-
 scaler2=MinMaxScaler()
 rescaledY=scaler2.fit_transform(labels.reshape(-1, 1))
 # summarise transformed data
@@ -110,7 +98,6 @@ rescaledY=scaler2.fit_transform(labels.reshape(-1, 1))
 #test
 scaler_test = MinMaxScaler(feature_range=(0, 1))
 rescaledX_test = scaler_test.fit_transform(features_test)
-
 scaler2_test=MinMaxScaler()
 rescaledY_test=scaler2_test.fit_transform(labels_test.reshape(-1, 1))
 # summarise transformed data
@@ -119,31 +106,30 @@ rescaledY_test=scaler2_test.fit_transform(labels_test.reshape(-1, 1))
 #train
 scaler = StandardScaler().fit(rescaledX)
 standardX = scaler.transform(rescaledX)
-
 scaler2=StandardScaler().fit(rescaledY)
 standardY=scaler2.transform(rescaledY)
+'''
 print "Mean after scalling for train is:", standardX.mean()
 print "Variance after scalling for train is:", standardX.var()
-
+'''
 
 #Standardise Data
 #test
 scaler_test = StandardScaler().fit(rescaledX_test)
 standardX_test = scaler_test.transform(rescaledX_test)
-
 scaler2_test=StandardScaler().fit(rescaledY_test)
-standardY_test=scaler2.transform(rescaledY_test)
+standardY_test=scaler2_test.transform(rescaledY_test)
+'''
 print "Mean after scalling for test is:", standardX_test.mean()
 print "Variance after scalling for test is:", standardX_test.var()
+'''
 
 #train
 # Normalise data (length of 1)
 scaler = Normalizer().fit(standardX)
 normalizedX = scaler.transform(standardX)
-
-
 scaler2 = Normalizer().fit(standardY)
-normalizedY = scaler.transform(standardY)
+normalizedY = scaler2.transform(standardY)
 
 X=normalizedX
 Y=normalizedY
@@ -152,19 +138,18 @@ Y=normalizedY
 #test
 # Normalise data (length of 1)
 scaler_test = Normalizer().fit(standardX_test)
-normalizedX_test = scaler.transform(standardX_test)
-
-
+normalizedX_test = scaler_test.transform(standardX_test)
 scaler2_test = Normalizer().fit(standardY_test)
-normalizedY_test = scaler_test.transform(standardY_test)
+normalizedY_test = scaler2_test.transform(standardY_test)
 
 X_test=normalizedX_test
 Y_test=normalizedY_test
 
+
+
+
 seed=7
 kfold = KFold(n_splits=10, random_state=seed)
-
-
 
 models = []
 models.append(('LR',      LinearRegression()))
@@ -209,8 +194,8 @@ print "MSE:\n", results_mse_sorted
 print "MAE:\n", results_mae_sorted
 
 
-print "1st choice on training:",(results_mae_sorted[2])
-print "2nd choice on training:",(results_mae_sorted[1])
+#print "1st choice on training:",(results_mae_sorted[2])
+#print "2nd choice on training:",(results_mae_sorted[1])
 
 
 regressors=['LR', 'RIDGE','LASSO']
@@ -241,73 +226,68 @@ for i in regressors:
 
 
 
+'''TRAINING'''
+
 #linear_model
-
 model_LR_win = GridSearchCV(model_LR, param_grid=params_LR, n_jobs=-1)
-#Learning
 model_LR_win.fit(X,Y)
-#The best hyper parameters set
-print("Best Hyper Parameters:",model_LR_win.best_params_)
-#Prediction
+#print("Best Hyper Parameters:",model_LR_win.best_params_)
 prediction=model_LR_win.predict(X_test)
-
 score='neg_mean_absolute_error'
-
 neg_mean_absolute_error = cross_val_score(model_LR, X, Y, cv=kfold, scoring='neg_mean_absolute_error')
 neg_mean_absolute_error=neg_mean_absolute_error.mean()
-print "neg_mean_absolute_error after setting hyperparameters is:",(neg_mean_absolute_error)
+#print "neg_mean_absolute_error after setting hyperparameters is:",(neg_mean_absolute_error)
 
 #Lasso
 model_Lasso_win = GridSearchCV(model_Lasso, param_grid=params_Lasso, n_jobs=-1)
-#Learning
 model_Lasso_win.fit(X,Y)
-#The best hyper parameters set
-print("Best Hyper Parameters:",model_Lasso_win.best_params_)
-#Prediction
+#print("Best Hyper Parameters:",model_Lasso_win.best_params_)
 prediction=model_Lasso_win.predict(X_test)
 score='neg_mean_absolute_error'
 neg_mean_absolute_error = cross_val_score(model_Lasso, X, Y, cv=kfold, scoring='neg_mean_absolute_error')
 neg_mean_absolute_error=neg_mean_absolute_error.mean()
-print "neg_mean_absolute_error after setting hyperparameters is:",(neg_mean_absolute_error)
+#print "neg_mean_absolute_error after setting hyperparameters is:",(neg_mean_absolute_error)
 
 #Ridge
 model_Ridge_win = GridSearchCV(model_Ridge, param_grid=params_Ridge, n_jobs=-1)
-#Learning
 model_Ridge_win.fit(X,Y)
-#The best hyper parameters set
-print("Best Hyper Parameters:",model_Lasso_win.best_params_)
-#Prediction
+#print("Best Hyper Parameters:",model_Lasso_win.best_params_)
 prediction=model_Ridge_win.predict(X_test)
-#importing the metrics module
 score='neg_mean_absolute_error'
-#evaluation(Accuracy)
 neg_mean_absolute_error = cross_val_score(model_Ridge, X, Y, cv=kfold, scoring='neg_mean_absolute_error')
 neg_mean_absolute_error=neg_mean_absolute_error.mean()
-print "neg_mean_absolute_error after setting hyperparameters is:",(neg_mean_absolute_error)
+#print "neg_mean_absolute_error after setting hyperparameters is:",(neg_mean_absolute_error)
+
+
+'''TESTING'''
 
 #linear_test
-
-model_LR_win.fit(X_test,Y_test)
+print "----------------------------------------------linear regression--------------------------------------------------"
+model_LR_win.fit(X,Y)
 predictions_LR=model_LR_win.predict(X_test)
-neg_mean_absolute_error_LR = cross_val_score(model_LR_win, X_test, Y_test, cv=kfold, scoring='neg_mean_absolute_error')
-neg_mean_absolute_error_LR=neg_mean_absolute_error_LR.mean()
-print "The model is :", model_LR_win
-print "neg_mean_absolute_error for test dataset after setting  hyperparameters is:",(neg_mean_absolute_error_LR)
+lin_mse = mean_squared_error(predictions_LR,Y_test)
+lin_rmse = np.sqrt(lin_mse)
+lin_var=predictions_LR.var()
+print('Linear Regression RMSE: %.4f' % lin_rmse)
+print('Linear Regression var: %.4f' % lin_var)
 
 
 #lasso_test
-
-model_Lasso_win.fit(X_test,Y_test)
+print "----------------------------------------------lasso regression--------------------------------------------------"
+model_Lasso_win.fit(X,Y)
 predictions_Lasso=model_Lasso_win.predict(X_test)
-neg_mean_absolute_error_Lasso = cross_val_score(model_Lasso_win, X_test, Y_test, cv=kfold, scoring='neg_mean_absolute_error')
-neg_mean_absolute_error_Lasso=neg_mean_absolute_error_Lasso.mean()
-print "The  model is :", model_Lasso_win
-print "neg_mean_absolute_error for test dataset after setting  hyperparameters is:",(neg_mean_absolute_error_Lasso)
+lasso_mse = mean_squared_error(predictions_Lasso,Y_test)
+lasso_mse = np.sqrt(lasso_mse)
+lasso_var=predictions_Lasso.var()
+print('Lasso Regression RMSE: %.4f' % lasso_mse)
+print('Lasso Regression var: %.4f' % lasso_var)
 
 #ridge_test
-model_Ridge_win.fit(X_test,Y_test)
+print "----------------------------------------------ridge regression-------------------------------------------------"
+model_Ridge_win.fit(X,Y)
 predictions_Ridge=model_Ridge_win.predict(X_test)
-neg_mean_absolute_error_Ridge = cross_val_score(model_Ridge_win, X_test, Y_test, cv=kfold, scoring='neg_mean_absolute_error')
-neg_mean_absolute_error_Ridge=neg_mean_absolute_error_Ridge.mean()
-print "The  model is :", model_Ridge_win
-print "neg_mean_absolute_error for test dataset after setting  hyperparameters is:",(neg_mean_absolute_error_Ridge)
+Ridge_mse = mean_squared_error(predictions_Ridge,Y_test)
+Ridge_mse = np.sqrt(Ridge_mse)
+ridge_var=predictions_Ridge.var()
+print('Ridge Regression RMSE: %.4f' % Ridge_mse)
+print('Ridge Regression var: %.4f' % ridge_var)
