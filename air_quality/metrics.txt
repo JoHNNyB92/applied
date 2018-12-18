@@ -1,19 +1,15 @@
-Air-qulaity
-
-
 Ridge:
-clean data::					neg_mean_absolute_error :  -0.5344337800039234
-0.05_c_train_noisy.xlsx::		neg_mean_absolute_error :  -0.5344337800039234
-0.05_f_train_noisy.xlsx::		neg_mean_absolute_error :  -0.08990693788057562
+clean data::					          RMSE : 0.5726, var: 0.1195
+0.05_c_train_noisy.xlsx::		RMSE : 0.5443, var: 0.1411
+0.05_f_train_noisy.xlsx::		RMSE : 1.0078, var: 0.7050
 
 Lasso:
-clean data::					neg_mean_absolute_error : -0.7601883879163325
-0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.8336763777582517
-0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : -0.11721549188687583
+clean data::					          RMSE : 0.6140, var: 0.0755
+0.05_c_train_noisy.xlsx::		RMSE : 0.5770, var: 0.0903
+0.05_f_train_noisy.xlsx::		RMSE : 0.9844,  var: 0.6092
 
 	
 LR:
-clean data::					neg_mean_absolute_error : -0.5212039233075043
-0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.5212039233075043
-0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : -0.07412787335861691
-
+clean data::					          RMSE :  0.5596, var: 0.1590
+0.05_c_train_noisy.xlsx::		RMSE :  0.5279, var: 0.1865
+0.05_f_train_noisy.xlsx::		RMSE :  0.9875, var: 0.7114

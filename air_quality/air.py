@@ -29,9 +29,9 @@ from sklearn.metrics import mean_squared_error
 
 
 air_data_test = pd.read_excel('AirQualityUCI_0.05__test_.xlsx')
-air_data = pd.read_excel('AirQualityUCI_0.05__train_clean.xlsx')
+#air_data = pd.read_excel('AirQualityUCI_0.05__train_clean.xlsx')
 #air_data = pd.read_excel('AirQualityUCI_0.05_c_train_noisy.xlsx')
-#air_data = pd.read_excel('AirQualityUCI_0.05_f_train_noisy.xlsx')
+air_data = pd.read_excel('AirQualityUCI_0.05_f_train_noisy.xlsx')
 
 #print "\nHead of the dataset:\n", air_data.head()
 #print "------------------------------------------------------------------------------------------------"
