@@ -2,18 +2,18 @@ Boston
 
 
 Ridge:
-clean data::					neg_mean_absolute_error :  -0.5667279940094192
+clean data::				neg_mean_absolute_error :  -0.5667279940094192
 0.05_c_train_noisy.xlsx::		neg_mean_absolute_error :  -0.601003494866865
 0.05_f_train_noisy.xlsx::		neg_mean_absolute_error :  -0.5667279940094192 
 
 Lasso:
-clean data::					neg_mean_absolute_error : -0.9377371726490829
-0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.8926237880441601
-0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : -0.8682092935824433
+clean data::				neg_mean_absolute_error : -0.9245982568463879
+0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.9005637141485334
+0.05_f_train_noisy.xlsx::		neg_mean_absolute_error :  -0.9391754785727168
 
 	
 LR:
-clean data::					neg_mean_absolute_error : -0.6085660589060738
+clean data::				neg_mean_absolute_error : -0.6085660589060738
 0.05_c_train_noisy.xlsx::		neg_mean_absolute_error : -0.6309758534259571
 0.05_f_train_noisy.xlsx::		neg_mean_absolute_error : -0.6085660589060738
 
