@@ -232,7 +232,7 @@ def main(argv):
  print "----------------------------------------------ridge regression-------------------------------------------------"
   #Ridge
  model_Ridge_clean =Ridge()
- model_Ridge_clean.fit(X,Y)
+ model_Ridge_clean.fit(X_c,Y_c)
  predictions_Ridge_c=model_Ridge_clean.predict(X_test)
  Ridge_mse_c = mean_squared_error(predictions_Ridge_c,Y_test)
  Ridge_mse_c = np.sqrt(Ridge_mse_c)
@@ -306,7 +306,7 @@ def main(argv):
  print("p = " + str(2*p2))
  
  print("CLEAN RIDGE - NOISY RIDGE")
- t2, p2 = stats.ttest_ind(predictions_Ridge_c,predictions_Ridge)
+ t2, p2 = stats.ttest_ind(predictions_Ridge,predictions_Ridge_c)
  print("t = " + str(t2))
  print("p = " + str(2*p2))
 
