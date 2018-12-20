@@ -33,6 +33,7 @@ import numpy as np
 from scipy import stats
 
 
+
 def main(argv):
 
  print 'Number of arguments:', len(sys.argv), 'arguments.'
@@ -58,6 +59,12 @@ def main(argv):
 
  null_data = nba_test[nba_test.isnull().any(axis=1)]
  #print null_data
+ 
+ 
+ #drop na vallues
+ nba = nba.dropna()
+ nba_test= nba_test.dropna()
+ nba_clean = nba_clean.dropna()
 
  #train
  features = nba
@@ -113,85 +120,53 @@ def main(argv):
  #train
  scaler = MinMaxScaler(feature_range=(0, 1))
  rescaledX = scaler.fit_transform(features)
- scaler2=MinMaxScaler()
- rescaledY=scaler2.fit_transform(labels.reshape(-1, 1))
  # summarise transformed data
 
  #test
  scaler_test = MinMaxScaler(feature_range=(0, 1))
  rescaledX_test = scaler_test.fit_transform(features_test)
- scaler2_test=MinMaxScaler()
- rescaledY_test=scaler2_test.fit_transform(labels_test.reshape(-1, 1))
  # summarise transformed data
  
  #train clean
  scaler_c = MinMaxScaler(feature_range=(0, 1))
  rescaledX_c = scaler_c.fit_transform(features_c)
- scaler2_c=MinMaxScaler()
- rescaledY_c=scaler2_c.fit_transform(labels_c.reshape(-1, 1))
  # summarise transformed data
 
  #Standardise Data
  #train
  scaler = StandardScaler().fit(rescaledX)
  standardX = scaler.transform(rescaledX)
- scaler2=StandardScaler().fit(rescaledY)
- standardY=scaler2.transform(rescaledY)
- '''
- print "Mean after scalling for train is:", standardX.mean()
- print "Variance after scalling for train is:", standardX.var()
- '''
-
+ 
  #Standardise Data
  #test
  scaler_test = StandardScaler().fit(rescaledX_test)
  standardX_test = scaler_test.transform(rescaledX_test)
- scaler2_test=StandardScaler().fit(rescaledY_test)
- standardY_test=scaler2_test.transform(rescaledY_test)
- '''
- print "Mean after scalling for test is:", standardX_test.mean()
- print "Variance after scalling for test is:", standardX_test.var()
- '''
-
-
+ 
  #train clean
  scaler_c = StandardScaler().fit(rescaledX_c)
  standardX_c = scaler_c.transform(rescaledX_c)
- scaler2_c=StandardScaler().fit(rescaledY_c)
- standardY_c=scaler2_c.transform(rescaledY_c)
 
  #train
  # Normalise data (length of 1)
  scaler = Normalizer().fit(standardX)
  normalizedX = scaler.transform(standardX)
- scaler2 = Normalizer().fit(standardY)
- normalizedY = scaler2.transform(standardY)
-
  X=normalizedX
- Y=normalizedY
+ Y=labels
 
 
  #test
  # Normalise data (length of 1)
  scaler_test = Normalizer().fit(standardX_test)
  normalizedX_test = scaler_test.transform(standardX_test)
- scaler2_test = Normalizer().fit(standardY_test)
- normalizedY_test = scaler2_test.transform(standardY_test)
-
  X_test=normalizedX_test
- Y_test=normalizedY_test
- 
-
+ Y_test=labels_test
 
  #train clean
  # Normalise data (length of 1)
  scaler_c = Normalizer().fit(standardX_c)
  normalizedX_c = scaler_c.transform(standardX_c)
- scaler2_c = Normalizer().fit(standardY_c)
- normalizedY_c= scaler2_c.transform(standardY_c)
-
  X_c=normalizedX_c
- Y_c=normalizedY_c
+ Y_c=labels_c
 
 
 
@@ -261,7 +236,7 @@ def main(argv):
  #lasso_test
  print "----------------------------------------------lasso regression--------------------------------------------------"
   #Lasso
- model_Lasso_win =Lasso()
+ model_Lasso_win =Lasso(alpha=0.1, normalize = True)
  model_Lasso_win.fit(X,Y)
  predictions_Lasso=model_Lasso_win.predict(X_test)
  lasso_mse = mean_squared_error(predictions_Lasso,Y_test)
@@ -306,9 +281,10 @@ def main(argv):
  print("p = " + str(2*p2))
  
  print("CLEAN RIDGE - NOISY RIDGE")
- t2, p2 = stats.ttest_ind(predictions_Ridge,predictions_Ridge_c)
+ t2, p2 = stats.ttest_ind(predictions_Ridge_c,predictions_Ridge)
  print("t = " + str(t2))
  print("p = " + str(2*p2))
+
 
 if __name__ == "__main__":
    main(sys.argv[1:])
