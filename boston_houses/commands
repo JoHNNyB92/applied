@@ -1,0 +1,7 @@
+ 2049  cd ../boston_houses/
+ 2050  python boston.py housing_0.05_c_train_noisy.xlsx housing_0.05__test_.xlsx 
+ 2051  python boston.py housing_0.05_f_train_noisy.xlsx housing_0.05__test_.xlsx 
+ 2052  python boston.py housing_0.15_f_train_noisy.xlsx housing_0.05__test_.xlsx 
+ 2053  python boston.py housing_0.15_c_train_noisy.xlsx housing_0.05__test_.xlsx 
+ 2054  python boston.py housing_0.35_c_train_noisy.xlsx housing_0.05__test_.xlsx 
+ 2055  python boston.py housing_0.35_f_train_noisy.xlsx housing_0.05__test_.xlsx
