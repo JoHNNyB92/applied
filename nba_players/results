@@ -1,0 +1,270 @@
+
+python nba.py players_stats_0.05_f_train_noisy.xlsx players_stats___test_.xlsx 
+
+
+CLEAN LINEAR - NOISY LINEAR
+t = -0.16484305789410594
+p = 1.7385361497413503
+CLEAN LASSO - NOISY LASSO
+t = 0.1982449869532443
+p = 1.686191928886033
+CLEAN RIDGE - NOISY RIDGE
+t = 0.37140191715355186
+p = 1.421623601334375
+clean mean:4323467.151442413
+noisy mean:4427708.380644156
+clean var:4630692.730915532
+noisy var:3427439.170550783
+clean var:21701668362950.984
+noisy var:11888873475871.936
+calculated t- statistic: -0.14588753536478194
+calculated p-value statistic: 1.1158128254815813
+
+
+python nba.py players_stats_0.05_c_train_noisy.xlsx players_stats___test_.xlsx 
+
+
+CLEAN:Lasso Regression RMSE: 3614577.6765
+CLEAN:Lasso Regression var: 13622775973375.3867
+----------------------------------------------ridge regression-------------------------------------------------
+CLEAN:Ridge Regression RMSE: 3510508.5475
+CLEAN:Ridge Regression var: 9943167483850.1504
+----------------------------------------------linear regression--------------------------------------------------
+NOISY:Linear Regression RMSE: 3872786.6836
+NOISY:Linear Regression var: 19590797822834.1445
+----------------------------------------------lasso regression--------------------------------------------------
+NOISY:Lasso Regression RMSE: 3611323.9524
+NOISY:Lasso Regression var: 12427015936561.4531
+----------------------------------------------ridge regression-------------------------------------------------
+NOISY:Ridge Regression RMSE: 3562135.1233
+NOISY:Ridge Regression var: 9094543359945.7148
+###############################################################
+CLEAN LINEAR - NOISY LINEAR
+t = -0.4594257836398985
+p = 1.2930590284917343
+CLEAN LASSO - NOISY LASSO
+t = -0.5709184267100923
+p = 1.1376540256387933
+CLEAN RIDGE - NOISY RIDGE
+t = -0.6780732943610625
+p = 0.9973386101555188
+clean mean:4323467.151442413
+noisy mean:4646501.604015088
+clean var:4630692.730915532
+noisy var:4426149.322247742
+clean var:21701668362950.984
+noisy var:19826831531542.99
+calculated t- statistic: -0.4520927078076564
+calculated p-value statistic: 1.3482076114358161
+
+
+
+
+
+python nba.py players_stats_0.15_f_train_noisy.xlsx players_stats___test_.xlsx 
+
+CLEAN:Lasso Regression RMSE: 3614577.6765
+CLEAN:Lasso Regression var: 13622775973375.3867
+----------------------------------------------ridge regression-------------------------------------------------
+CLEAN:Ridge Regression RMSE: 3510508.5475
+CLEAN:Ridge Regression var: 9943167483850.1504
+----------------------------------------------linear regression--------------------------------------------------
+NOISY:Linear Regression RMSE: 3496065.6339
+NOISY:Linear Regression var: 12777674426252.1289
+----------------------------------------------lasso regression--------------------------------------------------
+NOISY:Lasso Regression RMSE: 3496066.1846
+NOISY:Lasso Regression var: 12777658454821.0977
+----------------------------------------------ridge regression-------------------------------------------------
+NOISY:Ridge Regression RMSE: 3497662.4026
+NOISY:Ridge Regression var: 12528563057773.8848
+###############################################################
+CLEAN LINEAR - NOISY LINEAR
+t = 0.24503117192678037
+p = 1.6134698807430652
+CLEAN LASSO - NOISY LASSO
+t = 0.6581403293497101
+p = 1.0227193122133564
+CLEAN RIDGE - NOISY RIDGE
+t = 0.8570881431607581
+p = 0.7852636553776804
+clean mean:4323467.151442413
+noisy mean:4166130.981786499
+clean var:4630692.730915532
+noisy var:3574587.3085227795
+clean var:21701668362950.984
+noisy var:12931622310905.768
+calculated t- statistic: 0.22019488978814955
+calculated p-value statistic: 0.8259899415191903
+
+
+
+
+
+python nba.py players_stats_0.15_c_train_noisy.xlsx players_stats___test_.xlsx 
+
+
+
+CLEAN:Lasso Regression RMSE: 3614577.6765
+CLEAN:Lasso Regression var: 13622775973375.3867
+----------------------------------------------ridge regression-------------------------------------------------
+CLEAN:Ridge Regression RMSE: 3510508.5475
+CLEAN:Ridge Regression var: 9943167483850.1504
+----------------------------------------------linear regression--------------------------------------------------
+NOISY:Linear Regression RMSE: 3984676.1801
+NOISY:Linear Regression var: 15964770517542.5156
+----------------------------------------------lasso regression--------------------------------------------------
+NOISY:Lasso Regression RMSE: 3847592.4706
+NOISY:Lasso Regression var: 10271433346159.1992
+----------------------------------------------ridge regression-------------------------------------------------
+NOISY:Ridge Regression RMSE: 3790666.2109
+NOISY:Ridge Regression var: 7911682092821.2471
+###############################################################
+CLEAN LINEAR - NOISY LINEAR
+t = -2.211143898939683
+p = 0.05678470237483409
+CLEAN LASSO - NOISY LASSO
+t = -2.70003497357114
+p = 0.015303122675542607
+CLEAN RIDGE - NOISY RIDGE
+t = -3.017375577392177
+p = 0.00590332745076392
+clean mean:4323467.151442413
+noisy mean:5807900.501500981
+clean var:4630692.730915532
+noisy var:3995593.887964906
+clean var:21701668362950.984
+noisy var:16157117150283.99
+calculated t- statistic: -2.0774920161363006
+calculated p-value statistic: 1.9607041748409175
+
+
+
+python nba.py players_stats_0.35_c_train_noisy.xlsx players_stats___test_.xlsx 
+
+
+CLEAN:Lasso Regression RMSE: 3614577.6765
+CLEAN:Lasso Regression var: 13622775973375.3867
+----------------------------------------------ridge regression-------------------------------------------------
+CLEAN:Ridge Regression RMSE: 3510508.5475
+CLEAN:Ridge Regression var: 9943167483850.1504
+----------------------------------------------linear regression--------------------------------------------------
+NOISY:Linear Regression RMSE: 4875256.8738
+NOISY:Linear Regression var: 10567614093066.0723
+----------------------------------------------lasso regression--------------------------------------------------
+NOISY:Lasso Regression RMSE: 4909114.3391
+NOISY:Lasso Regression var: 6827908919508.3301
+----------------------------------------------ridge regression-------------------------------------------------
+NOISY:Ridge Regression RMSE: 4920706.7668
+NOISY:Ridge Regression var: 5345639175192.6641
+###############################################################
+CLEAN LINEAR - NOISY LINEAR
+t = -5.437503235423064
+p = 3.806933788369477e-07
+CLEAN LASSO - NOISY LASSO
+t = -6.650810800493815
+p = 8.058789212195787e-10
+CLEAN RIDGE - NOISY RIDGE
+t = -7.584060009976701
+p = 4.527800027021774e-12
+clean mean:4323467.151442413
+noisy mean:7700300.460366215
+clean var:4630692.730915532
+noisy var:3250786.6883365437
+clean var:21701668362950.984
+noisy var:10694934744789.76
+calculated t- statistic: -4.725940911899393
+calculated p-value statistic: 1.9999951411715082
+
+
+
+
+python nba.py players_stats_0.35_f_train_noisy.xlsx players_stats___test_.xlsx 
+
+CLEAN:Lasso Regression RMSE: 3614577.6765
+CLEAN:Lasso Regression var: 13622775973375.3867
+----------------------------------------------ridge regression-------------------------------------------------
+CLEAN:Ridge Regression RMSE: 3510508.5475
+CLEAN:Ridge Regression var: 9943167483850.1504
+----------------------------------------------linear regression--------------------------------------------------
+NOISY:Linear Regression RMSE: 3906188.4781
+NOISY:Linear Regression var: 22786586250041.9961
+----------------------------------------------lasso regression--------------------------------------------------
+NOISY:Lasso Regression RMSE: 3906186.5938
+NOISY:Lasso Regression var: 22786536401337.1523
+----------------------------------------------ridge regression-------------------------------------------------
+NOISY:Ridge Regression RMSE: 3870341.8509
+NOISY:Ridge Regression var: 21947544161633.9141
+###############################################################
+CLEAN LINEAR - NOISY LINEAR
+t = 0.8987136182499234
+p = 0.7402139191168386
+CLEAN LASSO - NOISY LASSO
+t = 1.3134130458784745
+p = 0.38171257544933557
+CLEAN RIDGE - NOISY RIDGE
+t = 1.4961540634112638
+p = 0.27302464171684304
+clean mean:4323467.151442413
+noisy mean:3667412.132711008
+clean var:4630692.730915532
+noisy var:4773529.747476389
+clean var:21701668362950.984
+noisy var:23061123433777.44
+calculated t- statistic: 0.9181611630763771
+calculated p-value statistic: 0.35986662424554217
+
+
+
+
+CLEAN LINEAR - NOISY LINEAR
+t = 0.9864107274865584
+p = 0.6507343397477168
+CLEAN LASSO - NOISY LASSO
+t = 1.3959985514950288
+p = 0.3291582409715505
+CLEAN RIDGE - NOISY RIDGE
+t = 1.5756474817057622
+p = 0.23402188258345225
+clean mean:4323467.151442413
+noisy mean:3586631.999816954
+clean var:4630692.730915532
+noisy var:4986954.423067372
+clean var:21701668362950.984
+noisy var:25169349531218.11
+calculated t- statistic: 1.0312144542950141
+calculated p-value statistic: 0.303940369756019
+
+
+CLEAN:Lasso Regression RMSE: 3614577.6765
+CLEAN:Lasso Regression var: 13622775973375.3867
+----------------------------------------------ridge regression-------------------------------------------------
+CLEAN:Ridge Regression RMSE: 3510508.5475
+CLEAN:Ridge Regression var: 9943167483850.1504
+----------------------------------------------linear regression--------------------------------------------------
+NOISY:Linear Regression RMSE: 5347008.4568
+NOISY:Linear Regression var: 9307521801977.5215
+----------------------------------------------lasso regression--------------------------------------------------
+NOISY:Lasso Regression RMSE: 5474265.1515
+NOISY:Lasso Regression var: 4348807958299.1992
+----------------------------------------------ridge regression-------------------------------------------------
+NOISY:Ridge Regression RMSE: 5512395.4329
+NOISY:Ridge Regression var: 2887162375007.1562
+###############################################################
+CLEAN LINEAR - NOISY LINEAR
+t = -6.3843652631158845
+p = 3.3124127008998825e-09
+CLEAN LASSO - NOISY LASSO
+t = -8.322190146484813
+p = 6.05984607591634e-14
+CLEAN RIDGE - NOISY RIDGE
+t = -9.76286775331747
+p = 8.941266522870046e-18
+clean mean:4323467.151442413
+noisy mean:8209506.1098332815
+clean var:4630692.730915532
+noisy var:3050823.1351518105
+clean var:21701668362950.984
+noisy var:9419660618868.818
+calculated t- statistic: -5.438583685187039
+calculated p-value statistic: 1.9999998106299857
+

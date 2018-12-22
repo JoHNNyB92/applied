@@ -43,7 +43,7 @@ def main(argv):
  dataset_folder= 'noisy_datasets'
  nba= pd.read_excel(dataset_folder + '/'+ sys.argv[1])
  nba_test = pd.read_excel(dataset_folder + '/'+ sys.argv[2])
- nba_clean= pd.read_excel(dataset_folder + '/'+ 'players_stats_0.05__train_clean.xlsx')
+ nba_clean= pd.read_excel(dataset_folder + '/'+ 'players_stats___train_clean.xlsx')
  #nba = pd.read_excel('players_stats_0.05_f_train_noisy.xlsx')
  #nba_clean = pd.read_excel(dataset_folder + '/'+ 'players_stats_0.15_c_train_noisy.xlsx')
  #nba_test = pd.read_excel('players_stats_0.05__test_.xlsx')

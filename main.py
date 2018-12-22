@@ -5,7 +5,7 @@ from sklearn.model_selection import StratifiedKFold
 import sys
 from sklearn.model_selection import train_test_split
 import random
-
+import decimal 
 def generate_noise(min_max,keys,length,df,noisyless,n_f,enable_plot=False):
     noise_array={}
     records={}
@@ -50,10 +50,12 @@ def add_noise(noisy,noisy_probs,dfs,feat_prob,noisyless,n_f):
                 for i,elem in row_iterator:
                     prob=noisy_probs[key][rec]
                     if prob<feat_prob[key]:
-                        print 'Adding noise to '+key+',record '+str(rec)+' ,previously value '+str(elem[key])+', noise '+str(noisy[key][rec])+',new value '+str(elem[key]+noisy[key][rec])
-                      
-                        element_noise=elem[key]+noisy[key][rec]
-                        dfs.at[i,key] = int(element_noise)
+                        digits = len(str(elem[key]-int(elem[key]))[1:])-1
+                        if digits>4:
+                            digits=3
+                        print 'Adding noise to '+key+',record '+str(rec)+' ,previously value '+str(elem[key])+', noise '+str(noisy[key][rec])+',new value '+str(round(noisy[key][rec],digits))
+                        element_noise=round(noisy[key][rec],digits)
+                        dfs.at[i,key] = element_noise
                         for key2 in dfs.keys():
                              if key2!=key:   
                                  dfs.at[i,key2] = elem[key2]
@@ -67,9 +69,13 @@ def add_noise(noisy,noisy_probs,dfs,feat_prob,noisyless,n_f):
         for i,elem in row_iterator:
             prob=noisy_probs[target][rec]
             if prob<feat_prob[target]:
-                print 'Adding noise to '+target+',record '+str(rec)+' ,previously value '+str(elem[target])+', noise '+str(noisy[target][rec])+',new value '+str(elem[target]+noisy[target][rec])
-                elem[target]=elem[target]+noisy[target][rec]
-                dfs.at[i,target] = int(elem[target])
+                digits = len(str(elem[target]-int(elem[target]))[1:])-1
+                if digits>4:
+                    digits=3
+                print 'Adding noise to '+target+',record '+str(rec)+' ,previously value '+str(elem[target])+', noise '+str(noisy[target][rec])+',new value '+str(round(noisy[target][rec],digits))
+                elem[target]=round(noisy[target][rec],digits)
+                #elem[target]=elem[target]+noisy[target][rec]
+                dfs.at[i,target] = elem[target]
                 for key2 in dfs.keys():
                     if key2!=target:
                         dfs.at[i,key2] = elem[key2] 
@@ -122,45 +128,50 @@ def skf_regression(dfs,pct):
 if __name__ == "__main__":
     noisy_folder=sys.argv[1]
     clean_dataset=sys.argv[2]
-    noisy_pct=float(sys.argv[3])
-    n_f=sys.argv[4]
     dfs = pd.read_excel(noisy_folder+'/'+clean_dataset)
     df = pd.DataFrame(dfs, columns=dfs.keys())
     min_max={}
-    dfs_tr,df_test=np.split(dfs, [int(.8*len(df))])
     noise_prop_dict={}
     noisyless=[]
-    cnt=0
     for key in df.keys():
         if(str(df[key].dtype) != 'datetime64[ns]' and str(df[key].dtype) != 'object'):
             print 'Filling empty values with 0 for feature '+key
-            cnt=1+cnt
             df[key].fillna(0, inplace=True)
         else:
             noisyless.append(key)
             print 'Column '+key+' type is not of a number type'
-    noise_prop = [noisy_pct for _ in range(cnt)]
     length=df[key].count()
-    cnt=0
     for key in df.keys():
         if key not in noisyless:
-            noise_prop_dict[key]=noise_prop[cnt]
-            cnt+=1
             min_max[key]=[df.loc[df[key].idxmax()][key],df.loc[df[key].idxmin()][key]]
     pct=0.2
     (df_train,df_test)=skf_regression(df,pct)
-    write_excel_pd(df_train,noisy_folder,clean_dataset,noisy_pct,'','clean','train')
-    write_excel_pd(df_test,noisy_folder,clean_dataset,noisy_pct,'','','test')
+    write_excel_pd(df_train,noisy_folder,clean_dataset,'','','clean','train')
+    write_excel_pd(df_test,noisy_folder,clean_dataset,'','','','test')
+    c=[0.05,0.10,0.35,0.5]
+    case=['c','f']
+    for noisy_pct in c:
+        length=df[key].count()
+        noise_prop = [noisy_pct for _ in range(length)]
+        cnt=0
+        for key in df.keys():
+            if key not in noisyless:
+                noise_prop_dict[key]=noise_prop[cnt]
+                cnt=cnt+1
+        for n_f in case:
+            print 'Noise:'+str(noisy_pct)+' Case:'+n_f
+            df_train_n=df_train.copy()
+            headers=df.keys()  
+            noisy={}
+            noisy_probs={}
+            if len(sys.argv)!=3:
+                (noisy,noisy_probs)=generate_noise(min_max,headers,length,df_train_n,noisyless,n_f,True)
+            else:
+                (noisy,noisy_probs)=generate_noise(min_max,headers,length,df_train_n,noisyless,n_f)
+            df_train_n_n=add_noise(noisy,noisy_probs,df_train_n,noise_prop_dict,noisyless,n_f)
+            write_excel_pd(df_train_n_n,noisy_folder,clean_dataset,noisy_pct,n_f,'noisy','train')
     
-    headers=df.keys()  
-    noisy={}
-    noisy_probs={}
     
-    if len(sys.argv)!=5:
-        (noisy,noisy_probs)=generate_noise(min_max,headers,length,df_train,noisyless,n_f,True)
-    else:
-        (noisy,noisy_probs)=generate_noise(min_max,headers,length,df_train,noisyless,n_f)
-    df_train=add_noise(noisy,noisy_probs,df_train,noise_prop_dict,noisyless,n_f)
-    write_excel_pd(df_train,noisy_folder,clean_dataset,noisy_pct,n_f,'noisy','train')
+    
 	
  

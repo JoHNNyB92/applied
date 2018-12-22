@@ -40,7 +40,7 @@ def main(argv):
  dataset_folder= 'noisy_datasets'
  data= pd.read_excel(dataset_folder + '/'+ sys.argv[1])
  data_test = pd.read_excel(dataset_folder + '/'+ sys.argv[2])
- data_clean= pd.read_excel(dataset_folder + '/'+ 'AirQualityUCI_0.05__train_clean.xlsx')
+ data_clean= pd.read_excel(dataset_folder + '/'+ 'AirQualityUCI___train_clean.xlsx')
 
 
  '''
