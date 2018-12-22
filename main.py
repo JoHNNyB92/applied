@@ -53,7 +53,7 @@ def add_noise(noisy,noisy_probs,dfs,feat_prob,noisyless,n_f):
                         print 'Adding noise to '+key+',record '+str(rec)+' ,previously value '+str(elem[key])+', noise '+str(noisy[key][rec])+',new value '+str(elem[key]+noisy[key][rec])
                       
                         element_noise=elem[key]+noisy[key][rec]
-                        dfs.at[i,key] = element_noise 
+                        dfs.at[i,key] = int(element_noise)
                         for key2 in dfs.keys():
                              if key2!=key:   
                                  dfs.at[i,key2] = elem[key2]
@@ -69,7 +69,7 @@ def add_noise(noisy,noisy_probs,dfs,feat_prob,noisyless,n_f):
             if prob<feat_prob[target]:
                 print 'Adding noise to '+target+',record '+str(rec)+' ,previously value '+str(elem[target])+', noise '+str(noisy[target][rec])+',new value '+str(elem[target]+noisy[target][rec])
                 elem[target]=elem[target]+noisy[target][rec]
-                dfs.at[i,target] = elem[target]
+                dfs.at[i,target] = int(elem[target])
                 for key2 in dfs.keys():
                     if key2!=target:
                         dfs.at[i,key2] = elem[key2] 

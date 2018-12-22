@@ -45,7 +45,7 @@ def main(argv):
  nba_test = pd.read_excel(dataset_folder + '/'+ sys.argv[2])
  nba_clean= pd.read_excel(dataset_folder + '/'+ 'players_stats_0.05__train_clean.xlsx')
  #nba = pd.read_excel('players_stats_0.05_f_train_noisy.xlsx')
- #nba = pd.read_excel('players_stats_0.15_c_train_noisy.xlsx')
+ #nba_clean = pd.read_excel(dataset_folder + '/'+ 'players_stats_0.15_c_train_noisy.xlsx')
  #nba_test = pd.read_excel('players_stats_0.05__test_.xlsx')
 
  '''
@@ -88,8 +88,9 @@ def main(argv):
  features_c = features_c.drop('SALARY', axis=1)
  features_c = features_c.drop('Player', axis=1)
  labels_c= nba_clean['SALARY'].values
- features_c = features_c.values
+ #features_c = features_c.values
  print "\nShape of nba train:", features_c.shape
+
 
  '''
  print (nba.describe())
@@ -175,15 +176,13 @@ def main(argv):
  kfold = KFold(n_splits=10, random_state=seed)
  
  '''CLEAN'''
- 
- '''NOISY'''
 
  #linear_test
  print "----------------------------------------------linear regression--------------------------------------------------"
   #linear_model
  model_LR_clean = LinearRegression()
- model_LR_clean.fit(X_c,Y_c)
- predictions_LR_c=model_LR_clean.predict(X_test)
+ model_LR_clean.fit(X_c,Y_c)#.fit((features_c,labels_c)
+ predictions_LR_c=model_LR_clean.predict(X_test) #(features_test)
  lin_mse_c = mean_squared_error(predictions_LR_c,Y_test)
  lin_rmse_c = np.sqrt(lin_mse_c)
  lin_var_c=predictions_LR_c.var()
@@ -267,8 +266,27 @@ def main(argv):
  dict['Ridge_C']=predictions_Ridge_c
 
  print("###############################################################")
+ 
+ '''
+ mse_clean_LR=[a_i - b_i for a_i, b_i in zip(predictions_LR_c, Y_test)]
+ mse_noisy_LR=[a_i - b_i for a_i, b_i in zip(predictions_LR, Y_test)]
+ 
 
+ mse_clean_ilias=[a_i - b_i for a_i, b_i in zip(labels_c, labels)]
+ print mse_clean_ilias
+ print "mean ilias:"+ str(np.mean(mse_clean_ilias))
+ print "var ilias:"+ str(np.var(mse_clean_ilias))
+ 
+ 
+ 
 
+ print "5% mean ilias:"+ str(np.mean(labels))
+ print "5% var ilias:"+ str(np.var(labels))
+ 
+ print "15% mean ilias:"+ str(np.mean(labels_c))
+ print "15% var ilias:"+ str(np.var(labels_c))
+ '''
+ 
  '''T-test'''
  print("CLEAN LINEAR - NOISY LINEAR")
  t2, p2 = stats.ttest_ind(predictions_LR_c,predictions_LR)
@@ -284,7 +302,50 @@ def main(argv):
  t2, p2 = stats.ttest_ind(predictions_Ridge_c,predictions_Ridge)
  print("t = " + str(t2))
  print("p = " + str(2*p2))
+ 
 
+
+
+
+ print "clean mean:" + str(np.mean(predictions_LR_c))
+ print "noisy mean:"+ str(np.mean(predictions_LR))
+ print "clean var:" + str(np.sqrt(np.var(predictions_LR_c)))
+ print "noisy var:" + str(np.sqrt(np.var(predictions_LR)))
+
+ 
+ predictions_LR_c=np.array(predictions_LR_c)
+ predictions_LR=np.array(predictions_LR)
+ 
+ print "clean var:" + str(predictions_LR_c.var(ddof=1))
+ print "noisy var:" + str(predictions_LR.var(ddof=1))
+ 
+ s = np.sqrt(((np.var(predictions_LR_c) + np.sqrt(np.var(predictions_LR))/2)))
+ t = (predictions_LR_c.mean() - predictions_LR.mean())/(s*np.sqrt(2/float(84)))
+ p = 1 - stats.t.cdf(t,df=2*84-2)
+ print "calculated t- statistic: " + str(t)
+ print "calculated p-value statistic: " + str(2*p)
+
+
+#log approach
+ print predictions_LR_c
+ import math
+ min_LR_c=min(predictions_LR_c)
+ min_LR=min(predictions_LR)
+ predictions_LR_c_log=[]
+ predictions_LR_log=[]
+ for i in predictions_LR_c:
+  predictions_LR_c_log.append(i + 1 - min_LR_c)
+ for i in predictions_LR:
+  predictions_LR_log.append(i + 1 - min_LR)
+  
+ 
+ print predictions_LR_c_log
+ 
+ 
+ print("t ttest")
+ t2, p2 = stats.ttest_ind(predictions_LR_c_log,predictions_LR_log)
+ print("t = " + str(t2))
+ print("p = " + str(2*p2))
 
 if __name__ == "__main__":
    main(sys.argv[1:])
