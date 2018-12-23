@@ -40,7 +40,7 @@ def main(argv):
  dataset_folder= 'noisy_datasets'
  data= pd.read_excel(dataset_folder + '/'+sys.argv[1])
  data_test = pd.read_excel(dataset_folder + '/'+sys.argv[2])
- data_clean= pd.read_excel(dataset_folder + '/'+'housing_0.05__train_clean.xlsx')
+ data_clean= pd.read_excel(dataset_folder + '/'+'housing___train_clean.xlsx')
 
 
  '''
@@ -102,7 +102,7 @@ def main(argv):
  plt.show()
  '''
  # Rescale data (between 0 and 1)
-
+ '''
 #train
  scaler = MinMaxScaler(feature_range=(0, 1))
  rescaledX = scaler.fit_transform(features)
@@ -110,7 +110,7 @@ def main(argv):
 
  #test
  scaler_test = MinMaxScaler(feature_range=(0, 1))
- rescaledX_test = scaler_test.fit_transform(features_test)
+ rescaledfeatures_test = scaler_test.fit_transform(features_test)
  # summarise transformed data
  
  #train clean
@@ -125,8 +125,8 @@ def main(argv):
  
  #Standardise Data
  #test
- scaler_test = StandardScaler().fit(rescaledX_test)
- standardX_test = scaler_test.transform(rescaledX_test)
+ scaler_test = StandardScaler().fit(rescaledfeatures_test)
+ standardfeatures_test = scaler_test.transform(rescaledfeatures_test)
  
  #train clean
  scaler_c = StandardScaler().fit(rescaledX_c)
@@ -142,9 +142,9 @@ def main(argv):
 
  #test
  # Normalise data (length of 1)
- scaler_test = Normalizer().fit(standardX_test)
- normalizedX_test = scaler_test.transform(standardX_test)
- X_test=normalizedX_test
+ scaler_test = Normalizer().fit(standardfeatures_test)
+ normalizedfeatures_test = scaler_test.transform(standardfeatures_test)
+ features_test=normalizedfeatures_test
  Y_test=labels_test
 
  #train clean
@@ -154,12 +154,7 @@ def main(argv):
  X_c=normalizedX_c
  Y_c=labels_c
 
-
-
-
-
-
-
+ '''
 
  seed=7
  kfold = KFold(n_splits=10, random_state=seed)
@@ -171,9 +166,11 @@ def main(argv):
  print "----------------------------------------------linear regression--------------------------------------------------"
   #linear_model
  model_LR_clean = LinearRegression()
- model_LR_clean.fit(X_c,Y_c)
- predictions_LR_c=model_LR_clean.predict(X_test)
- lin_mse_c = mean_squared_error(predictions_LR_c,Y_test)
+ #model_LR_clean.fit(X_c,Y_c)
+ model_LR_clean.fit(features_c,labels_c)
+ #predictions_LR_c=model_LR_clean.predict(features_test)
+ predictions_LR_c=model_LR_clean.predict(features_test)
+ lin_mse_c = mean_squared_error(predictions_LR_c,labels_test)
  lin_rmse_c = np.sqrt(lin_mse_c)
  lin_var_c=predictions_LR_c.var()
  print('CLEAN:Linear Regression RMSE: %.4f' % lin_rmse_c)
@@ -184,9 +181,9 @@ def main(argv):
  print "----------------------------------------------lasso regression--------------------------------------------------"
   #Lasso
  model_Lasso_clean =Lasso()
- model_Lasso_clean.fit(X_c,Y_c)
- predictions_Lasso_c=model_Lasso_clean.predict(X_test)
- lasso_mse_c = mean_squared_error(predictions_Lasso_c,Y_test)
+ model_Lasso_clean.fit(features_c,labels_c)
+ predictions_Lasso_c=model_Lasso_clean.predict(features_test)
+ lasso_mse_c = mean_squared_error(predictions_Lasso_c,labels_test)
  lasso_mse_c = np.sqrt(lasso_mse_c)
  lasso_var_c=predictions_Lasso_c.var()
  print('CLEAN:Lasso Regression RMSE: %.4f' % lasso_mse_c)
@@ -196,9 +193,9 @@ def main(argv):
  print "----------------------------------------------ridge regression-------------------------------------------------"
   #Ridge
  model_Ridge_clean =Ridge()
- model_Ridge_clean.fit(X_c,Y_c)
- predictions_Ridge_c=model_Ridge_clean.predict(X_test)
- Ridge_mse_c = mean_squared_error(predictions_Ridge_c,Y_test)
+ model_Ridge_clean.fit(features_c,labels_c)
+ predictions_Ridge_c=model_Ridge_clean.predict(features_test)
+ Ridge_mse_c = mean_squared_error(predictions_Ridge_c,labels_test)
  Ridge_mse_c = np.sqrt(Ridge_mse_c)
  ridge_var_c=predictions_Ridge_c.var()
  print('CLEAN:Ridge Regression RMSE: %.4f' % Ridge_mse_c)
@@ -213,9 +210,9 @@ def main(argv):
  print "----------------------------------------------linear regression--------------------------------------------------"
   #linear_model
  model_LR_win = LinearRegression()
- model_LR_win.fit(X,Y)
- predictions_LR=model_LR_win.predict(X_test)
- lin_mse = mean_squared_error(predictions_LR,Y_test)
+ model_LR_win.fit(features,labels)
+ predictions_LR=model_LR_win.predict(features_test)
+ lin_mse = mean_squared_error(predictions_LR,labels_test)
  lin_rmse = np.sqrt(lin_mse)
  lin_var=predictions_LR.var()
  print('NOISY:Linear Regression RMSE: %.4f' % lin_rmse)
@@ -226,9 +223,9 @@ def main(argv):
  print "----------------------------------------------lasso regression--------------------------------------------------"
   #Lasso
  model_Lasso_win =Lasso()
- model_Lasso_win.fit(X,Y)
- predictions_Lasso=model_Lasso_win.predict(X_test)
- lasso_mse = mean_squared_error(predictions_Lasso,Y_test)
+ model_Lasso_win.fit(features,labels)
+ predictions_Lasso=model_Lasso_win.predict(features_test)
+ lasso_mse = mean_squared_error(predictions_Lasso,labels_test)
  lasso_mse = np.sqrt(lasso_mse)
  lasso_var=predictions_Lasso.var()
  print('NOISY:Lasso Regression RMSE: %.4f' % lasso_mse)
@@ -238,9 +235,9 @@ def main(argv):
  print "----------------------------------------------ridge regression-------------------------------------------------"
   #Ridge
  model_Ridge_win =Ridge()
- model_Ridge_win.fit(X,Y)
- predictions_Ridge=model_Ridge_win.predict(X_test)
- Ridge_mse = mean_squared_error(predictions_Ridge,Y_test)
+ model_Ridge_win.fit(features,labels)
+ predictions_Ridge=model_Ridge_win.predict(features_test)
+ Ridge_mse = mean_squared_error(predictions_Ridge,labels_test)
  Ridge_mse = np.sqrt(Ridge_mse)
  ridge_var=predictions_Ridge.var()
  print('NOISY:Ridge Regression RMSE: %.4f' % Ridge_mse)
