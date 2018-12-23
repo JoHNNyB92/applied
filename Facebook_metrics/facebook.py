@@ -42,8 +42,8 @@ def main(argv):
 
  dataset_folder= 'noisy_datasets'
  nba= pd.read_excel(dataset_folder + '/'+ sys.argv[1])
- nba_test = pd.read_excel(dataset_folder + '/'+ sys.argv[2])
- nba_clean= pd.read_excel(dataset_folder + '/'+ 'players_stats___train_clean.xlsx')
+ nba_test = pd.read_excel(dataset_folder + '/'+ 'dataset_Facebook___test_.xlsx')
+ nba_clean= pd.read_excel(dataset_folder + '/'+ 'dataset_Facebook___train_clean.xlsx')
  #nba = pd.read_excel('players_stats_0.05_f_train_noisy.xlsx')
  #nba_clean = pd.read_excel(dataset_folder + '/'+ 'players_stats_0.15_c_train_noisy.xlsx')
  #nba_test = pd.read_excel('players_stats_0.05__test_.xlsx')
@@ -62,127 +62,69 @@ def main(argv):
  
  
  #drop na vallues
- nba = nba.dropna()
- nba_test= nba_test.dropna()
- nba_clean = nba_clean.dropna()
+ data = nba.dropna()
+ data_test= nba_test.dropna()
+ data_clean = nba_clean.dropna()
 
  #train
- features = nba
- features = features.drop('SALARY', axis=1)
- features = features.drop('Player', axis=1)
- labels = nba['SALARY'].values
+ features = data
+ features = features.drop('Type', axis=1)
+ features = features.drop('Post Month', axis=1)
+ features = features.drop('Post Weekday', axis=1)
+ features = features.drop('Post Hour', axis=1)
+ features = features.drop('Category', axis=1)
+ features = features.drop('Paid', axis=1)
+ features = features.drop('Total Interactions', axis=1)
+ labels = data['Total Interactions'].values
  features = features.values
  print "\nShape of nba train:", features.shape
 
  #test
- features_test = nba_test
- features_test = features_test.drop('SALARY', axis=1)
- features_test = features_test.drop('Player', axis=1)
- labels_test = nba_test['SALARY'].values
+ features_test = data_test
+ features_test = features_test.drop('Type', axis=1)
+ features_test = features_test.drop('Post Month', axis=1)
+ features_test = features_test.drop('Post Weekday', axis=1)
+ features_test = features_test.drop('Post Hour', axis=1)
+ features_test = features_test.drop('Category', axis=1)
+ features_test = features_test.drop('Paid', axis=1)
+ features_test = features_test.drop('Total Interactions', axis=1)
+ labels_test = data_test['Total Interactions'].values
  features_test = features_test.values
  print "\nShape of nba test:", features_test.shape
 
 
  #train_clean
- features_c = nba_clean
- features_c = features_c.drop('SALARY', axis=1)
- features_c = features_c.drop('Player', axis=1)
- labels_c= nba_clean['SALARY'].values
+ features_c = data_clean
+ features_c = features_c.drop('Type', axis=1)
+ features_c = features_c.drop('Post Month', axis=1)
+ features_c = features_c.drop('Post Weekday', axis=1)
+ features_c = features_c.drop('Post Hour', axis=1)
+ features_c = features_c.drop('Category', axis=1)
+ features_c = features_c.drop('Paid', axis=1)
+ features_c = features_c.drop('Total Interactions', axis=1)
+ labels_c= data_clean['Total Interactions'].values
  #features_c = features_c.values
  print "\nShape of nba train:", features_c.shape
 
 
- '''
- print (nba.describe())
- pd.set_option('display.width', 100)
- pd.set_option('precision', 3)
- correlations = nba.corr(method='pearson')
-
- #correlation matrix
- print(correlations)
- corr_matrix = nba.corr().abs()
- sns.heatmap(correlations)
- plt.show()
-
- #histograms
- h = nba.hist(figsize=(20,10))
- plt.show()
-
- #density
- nba.plot(kind='density', subplots=True, layout=(6,5), sharex=False, figsize=(50,50))
- plt.show()
-
- #boxplot
- sns.boxplot(data=nba)
- plt.show()
- '''
- # Rescale data (between 0 and 1)
-
- #train
- scaler = MinMaxScaler(feature_range=(0, 1))
- rescaledX = scaler.fit_transform(features)
- # summarise transformed data
-
- #test
- scaler_test = MinMaxScaler(feature_range=(0, 1))
- rescaledX_test = scaler_test.fit_transform(features_test)
- # summarise transformed data
  
- #train clean
- scaler_c = MinMaxScaler(feature_range=(0, 1))
- rescaledX_c = scaler_c.fit_transform(features_c)
- # summarise transformed data
-
- #Standardise Data
- #train
- scaler = StandardScaler().fit(rescaledX)
- standardX = scaler.transform(rescaledX)
- 
- #Standardise Data
- #test
- scaler_test = StandardScaler().fit(rescaledX_test)
- standardX_test = scaler_test.transform(rescaledX_test)
- 
- #train clean
- scaler_c = StandardScaler().fit(rescaledX_c)
- standardX_c = scaler_c.transform(rescaledX_c)
-
- #train
- # Normalise data (length of 1)
- scaler = Normalizer().fit(standardX)
- normalizedX = scaler.transform(standardX)
- X=normalizedX
+ X=features
  Y=labels
 
-
- #test
- # Normalise data (length of 1)
- scaler_test = Normalizer().fit(standardX_test)
- normalizedX_test = scaler_test.transform(standardX_test)
- X_test=normalizedX_test
+ X_test=features_test
  Y_test=labels_test
 
- #train clean
- # Normalise data (length of 1)
- scaler_c = Normalizer().fit(standardX_c)
- normalizedX_c = scaler_c.transform(standardX_c)
- X_c=normalizedX_c
+ X_c=features_c
  Y_c=labels_c
-
-
-
-
- seed=7
- kfold = KFold(n_splits=10, random_state=seed)
  
- '''CLEAN'''
-
+ 
+ '''NOISY'''
  #linear_test
  print "----------------------------------------------linear regression--------------------------------------------------"
   #linear_model
  model_LR_clean = LinearRegression()
- model_LR_clean.fit(X_c,Y_c)#.fit((features_c,labels_c)
- predictions_LR_c=model_LR_clean.predict(X_test) #(features_test)
+ model_LR_clean.fit(X_c,Y_c)
+ predictions_LR_c=model_LR_clean.predict(X_test)
  lin_mse_c = mean_squared_error(predictions_LR_c,Y_test)
  lin_rmse_c = np.sqrt(lin_mse_c)
  lin_var_c=predictions_LR_c.var()
@@ -235,7 +177,7 @@ def main(argv):
  #lasso_test
  print "----------------------------------------------lasso regression--------------------------------------------------"
   #Lasso
- model_Lasso_win =Lasso(alpha=0.1, normalize = True)
+ model_Lasso_win =Lasso()
  model_Lasso_win.fit(X,Y)
  predictions_Lasso=model_Lasso_win.predict(X_test)
  lasso_mse = mean_squared_error(predictions_Lasso,Y_test)
@@ -266,35 +208,16 @@ def main(argv):
  dict['Ridge_C']=predictions_Ridge_c
 
  print("###############################################################")
- 
- '''
- mse_clean_LR=[a_i - b_i for a_i, b_i in zip(predictions_LR_c, Y_test)]
- mse_noisy_LR=[a_i - b_i for a_i, b_i in zip(predictions_LR, Y_test)]
- 
 
- mse_clean_ilias=[a_i - b_i for a_i, b_i in zip(labels_c, labels)]
- print mse_clean_ilias
- print "mean ilias:"+ str(np.mean(mse_clean_ilias))
- print "var ilias:"+ str(np.var(mse_clean_ilias))
- 
- 
- 
 
- print "5% mean ilias:"+ str(np.mean(labels))
- print "5% var ilias:"+ str(np.var(labels))
- 
- print "15% mean ilias:"+ str(np.mean(labels_c))
- print "15% var ilias:"+ str(np.var(labels_c))
- '''
- 
  '''T-test'''
  print("CLEAN LINEAR - NOISY LINEAR")
- t2, p2 = stats.ttest_ind(predictions_LR_c,predictions_LR)
+ t2, p2 = stats.ttest_ind(predictions_LR,predictions_LR_c)
  print("t = " + str(t2))
  print("p = " + str(2*p2))
 
  print("CLEAN LASSO - NOISY LASSO")
- t2, p2 = stats.ttest_ind(predictions_Lasso_c,predictions_Lasso)
+ t2, p2 = stats.ttest_ind(predictions_Lasso_c ,predictions_Lasso)
  print("t = " + str(t2))
  print("p = " + str(2*p2))
  
@@ -302,52 +225,10 @@ def main(argv):
  t2, p2 = stats.ttest_ind(predictions_Ridge_c,predictions_Ridge)
  print("t = " + str(t2))
  print("p = " + str(2*p2))
- 
-
-
-
-
- print "clean mean:" + str(np.mean(predictions_LR_c))
- print "noisy mean:"+ str(np.mean(predictions_LR))
- print "clean var:" + str(np.sqrt(np.var(predictions_LR_c)))
- print "noisy var:" + str(np.sqrt(np.var(predictions_LR)))
-
- 
- predictions_LR_c=np.array(predictions_LR_c)
- predictions_LR=np.array(predictions_LR)
- 
- print "clean var:" + str(predictions_LR_c.var(ddof=1))
- print "noisy var:" + str(predictions_LR.var(ddof=1))
- 
- s = np.sqrt(((np.var(predictions_LR_c) + np.sqrt(np.var(predictions_LR))/2)))
- t = (predictions_LR_c.mean() - predictions_LR.mean())/(s*np.sqrt(2/float(84)))
- p = 1 - stats.t.cdf(t,df=2*84-2)
- print "calculated t- statistic: " + str(t)
- print "calculated p-value statistic: " + str(2*p)
-
-
-#log approach
- print predictions_LR_c
- import math
- min_LR_c=min(predictions_LR_c)
- min_LR=min(predictions_LR)
- predictions_LR_c_log=[]
- predictions_LR_log=[]
- for i in predictions_LR_c:
-  predictions_LR_c_log.append(i + 1 - min_LR_c)
- for i in predictions_LR:
-  predictions_LR_log.append(i + 1 - min_LR)
-  
- 
- print predictions_LR_c_log
- 
- 
- print("t ttest")
- t2, p2 = stats.ttest_ind(predictions_LR_c_log,predictions_LR_log)
- print("t = " + str(t2))
- print("p = " + str(2*p2))
 
 if __name__ == "__main__":
    main(sys.argv[1:])
+    
+
     
 

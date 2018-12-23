@@ -33,14 +33,17 @@ import numpy as np
 from scipy import stats
 
 
+
 def main(argv):
 
  print 'Number of arguments:', len(sys.argv), 'arguments.'
  print 'Argument List:', str(sys.argv)
+
+
  dataset_folder= 'noisy_datasets'
- data= pd.read_excel(dataset_folder + '/'+sys.argv[1])
- data_test = pd.read_excel(dataset_folder + '/'+sys.argv[2])
- data_clean= pd.read_excel(dataset_folder + '/'+'housing___train_clean.xlsx')
+ nba= pd.read_excel(dataset_folder + '/'+ sys.argv[1])
+ nba_test = pd.read_excel(dataset_folder + '/'+ 'computer___test_.xlsx')
+ nba_clean= pd.read_excel(dataset_folder + '/'+ 'computer___train_clean.xlsx')
 
 
  '''
@@ -49,128 +52,69 @@ def main(argv):
  print "\nTail of the dataset:\n", nba.tail()
  '''
 
- null_data = data[data.isnull().any(axis=1)]
+ null_data = nba[nba.isnull().any(axis=1)]
  #print null_data
 
- null_data = data_test[data_test.isnull().any(axis=1)]
+ null_data = nba_test[nba_test.isnull().any(axis=1)]
  #print null_data
+ 
+ 
+ #drop na vallues
+ data = nba.dropna()
+ data_test= nba_test.dropna()
+ data_clean = nba_clean.dropna()
 
- ##train
+ #train
  features = data
- features = data.drop('MEDV', axis=1)
- labels = data['MEDV'].values
+ features = features.drop('Attribute Information', axis=1)
+ 
+ features = features.drop('ERP', axis=1)
+ features = features.drop('Model Name', axis=1)
+ labels = data['ERP'].values
  features = features.values
- print "\nShape of boston_pd train:", features.shape
+ print "\nShape of nba train:", features.shape
 
  #test
  features_test = data_test
- features_test = features_test.drop('MEDV', axis=1)
- labels_test = data_test['MEDV'].values
+ features_test = features_test.drop('Attribute Information', axis=1)
+ 
+ features_test = features_test.drop('Model Name', axis=1)
+ features_test = features_test.drop('ERP', axis=1)
+ labels_test = data_test['ERP'].values
  features_test = features_test.values
- print "\nShape of boston_pd test:", features_test.shape
+ print "\nShape of nba test:", features_test.shape
 
 
  #train_clean
  features_c = data_clean
- features_c = features_c.drop('MEDV', axis=1)
- labels_c= data_clean['MEDV'].values
- features_c = features_c.values
+ features_c = features_c.drop('Attribute Information', axis=1)
+ features_c = features_c.drop('Model Name', axis=1)
+ features_c = features_c.drop('ERP', axis=1)
+ 
+ labels_c= data_clean['ERP'].values
+ #features_c = features_c.values
  print "\nShape of nba train:", features_c.shape
 
- '''
- print (data.describe())
- pd.set_option('display.width', 100)
- pd.set_option('precision', 3)
- correlations = nba.corr(method='pearson')
 
- #correlation matrix
- print(correlations)
- corr_matrix = data.corr().abs()
- sns.heatmap(correlations)
- plt.show()
-
- #histograms
- h = data.hist(figsize=(20,10))
- plt.show()
-
- #density
- data.plot(kind='density', subplots=True, layout=(6,5), sharex=False, figsize=(50,50))
- plt.show()
-
- #boxplot
- sns.boxplot(data=nba)
- plt.show()
- '''
- # Rescale data (between 0 and 1)
- '''
-#train
- scaler = MinMaxScaler(feature_range=(0, 1))
- rescaledX = scaler.fit_transform(features)
- # summarise transformed data
-
- #test
- scaler_test = MinMaxScaler(feature_range=(0, 1))
- rescaledfeatures_test = scaler_test.fit_transform(features_test)
- # summarise transformed data
  
- #train clean
- scaler_c = MinMaxScaler(feature_range=(0, 1))
- rescaledX_c = scaler_c.fit_transform(features_c)
- # summarise transformed data
-
- #Standardise Data
- #train
- scaler = StandardScaler().fit(rescaledX)
- standardX = scaler.transform(rescaledX)
- 
- #Standardise Data
- #test
- scaler_test = StandardScaler().fit(rescaledfeatures_test)
- standardfeatures_test = scaler_test.transform(rescaledfeatures_test)
- 
- #train clean
- scaler_c = StandardScaler().fit(rescaledX_c)
- standardX_c = scaler_c.transform(rescaledX_c)
-
- #train
- # Normalise data (length of 1)
- scaler = Normalizer().fit(standardX)
- normalizedX = scaler.transform(standardX)
- X=normalizedX
+ X=features
  Y=labels
 
-
- #test
- # Normalise data (length of 1)
- scaler_test = Normalizer().fit(standardfeatures_test)
- normalizedfeatures_test = scaler_test.transform(standardfeatures_test)
- features_test=normalizedfeatures_test
+ X_test=features_test
  Y_test=labels_test
 
- #train clean
- # Normalise data (length of 1)
- scaler_c = Normalizer().fit(standardX_c)
- normalizedX_c = scaler_c.transform(standardX_c)
- X_c=normalizedX_c
+ X_c=features_c
  Y_c=labels_c
-
- '''
-
- seed=7
- kfold = KFold(n_splits=10, random_state=seed)
  
- '''CLEAN'''
  
-
+ '''NOISY'''
  #linear_test
  print "----------------------------------------------linear regression--------------------------------------------------"
   #linear_model
  model_LR_clean = LinearRegression()
- #model_LR_clean.fit(X_c,Y_c)
- model_LR_clean.fit(features_c,labels_c)
- #predictions_LR_c=model_LR_clean.predict(features_test)
- predictions_LR_c=model_LR_clean.predict(features_test)
- lin_mse_c = mean_squared_error(predictions_LR_c,labels_test)
+ model_LR_clean.fit(X_c,Y_c)
+ predictions_LR_c=model_LR_clean.predict(X_test)
+ lin_mse_c = mean_squared_error(predictions_LR_c,Y_test)
  lin_rmse_c = np.sqrt(lin_mse_c)
  lin_var_c=predictions_LR_c.var()
  print('CLEAN:Linear Regression RMSE: %.4f' % lin_rmse_c)
@@ -181,9 +125,9 @@ def main(argv):
  print "----------------------------------------------lasso regression--------------------------------------------------"
   #Lasso
  model_Lasso_clean =Lasso()
- model_Lasso_clean.fit(features_c,labels_c)
- predictions_Lasso_c=model_Lasso_clean.predict(features_test)
- lasso_mse_c = mean_squared_error(predictions_Lasso_c,labels_test)
+ model_Lasso_clean.fit(X_c,Y_c)
+ predictions_Lasso_c=model_Lasso_clean.predict(X_test)
+ lasso_mse_c = mean_squared_error(predictions_Lasso_c,Y_test)
  lasso_mse_c = np.sqrt(lasso_mse_c)
  lasso_var_c=predictions_Lasso_c.var()
  print('CLEAN:Lasso Regression RMSE: %.4f' % lasso_mse_c)
@@ -193,9 +137,9 @@ def main(argv):
  print "----------------------------------------------ridge regression-------------------------------------------------"
   #Ridge
  model_Ridge_clean =Ridge()
- model_Ridge_clean.fit(features_c,labels_c)
- predictions_Ridge_c=model_Ridge_clean.predict(features_test)
- Ridge_mse_c = mean_squared_error(predictions_Ridge_c,labels_test)
+ model_Ridge_clean.fit(X_c,Y_c)
+ predictions_Ridge_c=model_Ridge_clean.predict(X_test)
+ Ridge_mse_c = mean_squared_error(predictions_Ridge_c,Y_test)
  Ridge_mse_c = np.sqrt(Ridge_mse_c)
  ridge_var_c=predictions_Ridge_c.var()
  print('CLEAN:Ridge Regression RMSE: %.4f' % Ridge_mse_c)
@@ -210,9 +154,9 @@ def main(argv):
  print "----------------------------------------------linear regression--------------------------------------------------"
   #linear_model
  model_LR_win = LinearRegression()
- model_LR_win.fit(features,labels)
- predictions_LR=model_LR_win.predict(features_test)
- lin_mse = mean_squared_error(predictions_LR,labels_test)
+ model_LR_win.fit(X,Y)
+ predictions_LR=model_LR_win.predict(X_test)
+ lin_mse = mean_squared_error(predictions_LR,Y_test)
  lin_rmse = np.sqrt(lin_mse)
  lin_var=predictions_LR.var()
  print('NOISY:Linear Regression RMSE: %.4f' % lin_rmse)
@@ -223,9 +167,9 @@ def main(argv):
  print "----------------------------------------------lasso regression--------------------------------------------------"
   #Lasso
  model_Lasso_win =Lasso()
- model_Lasso_win.fit(features,labels)
- predictions_Lasso=model_Lasso_win.predict(features_test)
- lasso_mse = mean_squared_error(predictions_Lasso,labels_test)
+ model_Lasso_win.fit(X,Y)
+ predictions_Lasso=model_Lasso_win.predict(X_test)
+ lasso_mse = mean_squared_error(predictions_Lasso,Y_test)
  lasso_mse = np.sqrt(lasso_mse)
  lasso_var=predictions_Lasso.var()
  print('NOISY:Lasso Regression RMSE: %.4f' % lasso_mse)
@@ -235,9 +179,9 @@ def main(argv):
  print "----------------------------------------------ridge regression-------------------------------------------------"
   #Ridge
  model_Ridge_win =Ridge()
- model_Ridge_win.fit(features,labels)
- predictions_Ridge=model_Ridge_win.predict(features_test)
- Ridge_mse = mean_squared_error(predictions_Ridge,labels_test)
+ model_Ridge_win.fit(X,Y)
+ predictions_Ridge=model_Ridge_win.predict(X_test)
+ Ridge_mse = mean_squared_error(predictions_Ridge,Y_test)
  Ridge_mse = np.sqrt(Ridge_mse)
  ridge_var=predictions_Ridge.var()
  print('NOISY:Ridge Regression RMSE: %.4f' % Ridge_mse)
@@ -257,12 +201,12 @@ def main(argv):
 
  '''T-test'''
  print("CLEAN LINEAR - NOISY LINEAR")
- t2, p2 = stats.ttest_ind(predictions_LR_c,predictions_LR)
+ t2, p2 = stats.ttest_ind(predictions_LR,predictions_LR_c)
  print("t = " + str(t2))
  print("p = " + str(2*p2))
 
  print("CLEAN LASSO - NOISY LASSO")
- t2, p2 = stats.ttest_ind(predictions_Lasso_c,predictions_Lasso)
+ t2, p2 = stats.ttest_ind(predictions_Lasso_c ,predictions_Lasso)
  print("t = " + str(t2))
  print("p = " + str(2*p2))
  
@@ -273,5 +217,7 @@ def main(argv):
 
 if __name__ == "__main__":
    main(sys.argv[1:])
+    
+
     
 

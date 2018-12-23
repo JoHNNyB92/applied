@@ -158,7 +158,7 @@ if __name__ == "__main__":
     (df_train,df_test)=skf_regression(df,pct)
     write_excel_pd(df_train,noisy_folder,clean_dataset,'','','clean','train')
     write_excel_pd(df_test,noisy_folder,clean_dataset,'','','','test')
-    c=[0.05,0.10,0.35,0.5]
+    c=[0.15,0.35,0.5]
     #c=[0.05]
     case=['c','f','r']
     for noisy_pct in c:

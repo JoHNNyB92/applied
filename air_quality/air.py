@@ -39,15 +39,8 @@ def main(argv):
  print 'Argument List:', str(sys.argv)
  dataset_folder= 'noisy_datasets'
  data= pd.read_excel(dataset_folder + '/'+ sys.argv[1])
- data_test = pd.read_excel(dataset_folder + '/'+ sys.argv[2])
+ data_test = pd.read_excel(dataset_folder + '/'+ 'AirQualityUCI___test_.xlsx')
  data_clean= pd.read_excel(dataset_folder + '/'+ 'AirQualityUCI___train_clean.xlsx')
-
-
- '''
- print "\nHead of the dataset:\n", nba.head()
- print "------------------------------------------------------------------------------------------------"
- print "\nTail of the dataset:\n", nba.tail()
- '''
 
  null_data = data[data.isnull().any(axis=1)]
  #print null_data
@@ -83,90 +76,17 @@ def main(argv):
  features_c = features_c.values
  print "\nShape of nba train:", features_c.shape
 
- '''
- print (data.describe())
- pd.set_option('display.width', 100)
- pd.set_option('precision', 3)
- correlations = nba.corr(method='pearson')
-
- #correlation matrix
- print(correlations)
- corr_matrix = data.corr().abs()
- sns.heatmap(correlations)
- plt.show()
-
- #histograms
- h = data.hist(figsize=(20,10))
- plt.show()
-
- #density
- data.plot(kind='density', subplots=True, layout=(6,5), sharex=False, figsize=(50,50))
- plt.show()
-
- #boxplot
- sns.boxplot(data=nba)
- plt.show()
- '''
- # Rescale data (between 0 and 1)
-#train
- scaler = MinMaxScaler(feature_range=(0, 1))
- rescaledX = scaler.fit_transform(features)
- # summarise transformed data
-
- #test
- scaler_test = MinMaxScaler(feature_range=(0, 1))
- rescaledX_test = scaler_test.fit_transform(features_test)
- # summarise transformed data
- 
- #train clean
- scaler_c = MinMaxScaler(feature_range=(0, 1))
- rescaledX_c = scaler_c.fit_transform(features_c)
- # summarise transformed data
-
- #Standardise Data
- #train
- scaler = StandardScaler().fit(rescaledX)
- standardX = scaler.transform(rescaledX)
- 
- #Standardise Data
- #test
- scaler_test = StandardScaler().fit(rescaledX_test)
- standardX_test = scaler_test.transform(rescaledX_test)
- 
- #train clean
- scaler_c = StandardScaler().fit(rescaledX_c)
- standardX_c = scaler_c.transform(rescaledX_c)
-
- #train
- # Normalise data (length of 1)
- scaler = Normalizer().fit(standardX)
- normalizedX = scaler.transform(standardX)
- X=normalizedX
+ X=features
  Y=labels
 
-
- #test
- # Normalise data (length of 1)
- scaler_test = Normalizer().fit(standardX_test)
- normalizedX_test = scaler_test.transform(standardX_test)
- X_test=normalizedX_test
+ X_test=features_test
  Y_test=labels_test
 
- #train clean
- # Normalise data (length of 1)
- scaler_c = Normalizer().fit(standardX_c)
- normalizedX_c = scaler_c.transform(standardX_c)
- X_c=normalizedX_c
+ X_c=features_c
  Y_c=labels_c
-
-
- seed=7
- kfold = KFold(n_splits=10, random_state=seed)
  
- '''CLEAN'''
- 
+
  '''NOISY'''
-
  #linear_test
  print "----------------------------------------------linear regression--------------------------------------------------"
   #linear_model
@@ -260,7 +180,7 @@ def main(argv):
 
  '''T-test'''
  print("CLEAN LINEAR - NOISY LINEAR")
- t2, p2 = stats.ttest_ind(predictions_LR_c,predictions_LR)
+ t2, p2 = stats.ttest_ind(predictions_LR,predictions_LR_c)
  print("t = " + str(t2))
  print("p = " + str(2*p2))
 
